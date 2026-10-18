@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khanh Hoa Chess Club - Câu Lạc Bộ Cờ Vua Khánh Hòa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary-navy: #002b66;
+            --secondary-navy: #0a3d8f;
+            --text-dark: #1e293b;
+            --bg-light: #f8fafc;
+            --accent-gold: #ffb703;
+            --accent-silver: #cbd5e1;
+            --accent-bronze: #d97706;
+        }
+
+        body { 
+            background: var(--bg-light); 
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            color: var(--text-dark);
+        }
+
+        /* NAVBAR TRẮNG PHONG CÁCH FIDE */
+        .navbar-fide { 
+            background: #ffffff; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06); 
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .navbar-brand-fide { 
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .navbar-brand-fide img {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .navbar-brand-fide img:hover {
+            transform: scale(1.03);
+        }
+        .navbar-brand-fide .brand-title {
+            font-weight: 800;
+            font-size: 1.55rem;
+            color: var(--primary-navy);
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+        }
+        .navbar-brand-fide .brand-sub {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .nav-link-fide { 
+            color: var(--primary-navy) !important; 
+            font-weight: 700; 
+            padding: 10px 18px !important;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .nav-link-fide:hover { 
+            background: #f1f5f9;
+            color: var(--secondary-navy) !important;
+        }
+
+        .dropdown-menu-fide {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 8px;
+        }
+        .dropdown-item-fide {
+            font-weight: 600;
+            color: var(--primary-navy);
+            border-radius: 6px;
+            padding: 10px 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .dropdown-item-fide:hover {
+            background: #f1f5f9;
+            color: var(--secondary-navy);
+        }
+
+        /* CARD VÀ KHỐI CHÍNH */
+        .card { 
+            border: 1px solid #e2e8f0; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
+            margin-bottom: 24px; 
+            background: #ffffff;
+            overflow: hidden;
+        }
+        .card-header { 
+            background: #ffffff; 
+            border-bottom: 1px solid #e2e8f0; 
+            font-weight: 700; 
+            font-size: 1.1rem;
+            color: var(--primary-navy); 
+            padding: 16px 20px;
+        }
+
+        /* KHỐI THỐNG KÊ */
+        .stats-box { 
+            background: #ffffff; 
+            border-radius: 12px;
+            padding: 20px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--primary-navy); 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: #f1f5f9;
+            color: var(--primary-navy);
+        }
+
+        /* BẢNG VÀ HUY HIỆU ELO */
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 12px;
+        }
+        .table-hover tbody tr:hover { 
+            background-color: #f1f5f9 !important; 
+            cursor: pointer; 
+        }
+
+        .badge-elo {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .badge-std { background: var(--primary-navy); color: white; }
+        .badge-rapid { background: #059669; color: white; }
+        .badge-blitz { background: #d97706; color: white; }
+        .badge-total { background: #7c3aed; color: white; }
+
+        .rank-medal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 13px;
+        }
+        .rank-1 { background: var(--accent-gold); color: #000; }
+        .rank-2 { background: var(--accent-silver); color: #000; }
+        .rank-3 { background: var(--accent-bronze); color: #fff; }
+
+        /* ==================== HIỆU ỨNG DANH HIỆU ĐẶC BIỆT ==================== */
+        .title-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            margin-left: 4px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            position: relative;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+
+        .title-admin {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #030712 100%);
+            color: #ffffff !important;
+            border: 1px solid #374151;
+            box-shadow: 0 0 10px rgba(17, 24, 39, 0.7);
+            animation: adminGlow 2.5s infinite alternate;
+        }
+        .title-admin::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+            transform: rotate(30deg);
+            animation: adminShimmer 3s infinite;
+        }
+
+        @keyframes adminGlow {
+            0% { box-shadow: 0 0 4px rgba(17, 24, 39, 0.8); }
+            100% { box-shadow: 0 0 12px rgba(17, 24, 39, 1); }
+        }
+        @keyframes adminShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .title-gokh {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #00c6ff 100%);
+            color: #002b66 !important;
+            border: 1px solid #e0f7fa;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.7);
+            animation: diamondGlow 2.5s infinite alternate;
+        }
+        .title-gokh::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent 30%, rgba(255,255,255,0.8) 50%, transparent 70%);
+            transform: rotate(30deg);
+            animation: diamondShimmer 3s infinite;
+        }
+
+        @keyframes diamondGlow {
+            0% { box-shadow: 0 0 4px #00f2fe; }
+            100% { box-shadow: 0 0 12px #00c6ff; }
+        }
+        @keyframes diamondShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .title-khm {
+            background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+            color: #3e2723 !important;
+            border: 1px solid #fff8e1;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+            animation: goldGlow 2s infinite alternate;
+        }
+        @keyframes goldGlow {
+            0% { box-shadow: 0 0 4px #ffd700; }
+            100% { box-shadow: 0 0 10px #ff8f00; }
+        }
+
+        .title-cm {
+            background: linear-gradient(135deg, #ffe082, #ffb300);
+            color: #4a2c00 !important;
+            border: 1px solid #fff3e0;
+        }
+        /* ==================================================================== */
+
+        .player-avatar { 
+            width: 100%; 
+            max-width: 260px; 
+            height: 320px; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            border: 3px solid #e2e8f0; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+        }
+
+        .zoomable-img {
+            cursor: zoom-in;
+            transition: transform 0.2s ease;
+        }
+        .zoomable-img:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-guide-card {
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .photo-guide-img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* TAB ADMIN STYLES */
+        .nav-tabs .nav-link {
+            color: #64748b !important;
+            font-weight: 700;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+        .nav-tabs .nav-link.active {
+            color: var(--primary-navy) !important;
+            border-bottom: 3px solid var(--primary-navy) !important;
+            background-color: transparent !important;
+        }
+
+        .news-card {
+            border-left: 4px solid var(--primary-navy);
+            transition: transform 0.2s;
+        }
+        .news-card:hover {
+            transform: translateY(-2px);
+        }
+        .news-image {
+            max-height: 380px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .admin-tab-pane {
+            display: none;
+        }
+        .admin-tab-pane.active-tab {
+            display: block !important;
+        }
+
+        .hidden { display: none !important; }
+
+        #loadingOverlay { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(4px);
+            z-index: 9999; 
+            display: flex; justify-content: center; align-items: center; 
+            color: #fff; font-size: 18px; font-weight: 600;
+        }
+    </style>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPz5zbFgKSS-MVLTAcq804unZz132HAj0",
+            authDomain: "clbcvkh.firebaseapp.com",
+            projectId: "clbcvkh",
+            storageBucket: "clbcvkh.firebasestorage.app",
+            messagingSenderId: "994002778790",
+            appId: "1:994002778790:web:e72c9dd825fd92a3fb5267",
+            measurementId: "G-NGTSSK4TF0"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        const _k1 = [48, 56, 57, 57, 51, 54, 50, 55, 53, 52, 64];
+        function _getPass() { return String.fromCharCode(..._k1); }
+
+        let membersCache = [];
+        let pendingCache = [];
+        let editRequestsCache = [];
+        let newsCache = [];
+        let selectedFile = null;
+        let editSelectedFile = null;
+        let newsSelectedFile = null;
+
+        function toggleMobileMenu() {
+            const nav = document.getElementById('navbarNav');
+            if (nav) nav.classList.toggle('show');
+        }
+
+        function getTotalElo(member) {
+            const std = parseInt(member.eloStd) || 0;
+            const rapid = parseInt(member.eloRapid) || 0;
+            const blitz = parseInt(member.eloBlitz) || 0;
+            return std + rapid + blitz;
+        }
+
+        // HÀM HIỂN THỊ DANH HIỆU (ĐÃ LOẠI BỎ JCP VÀ ADP)
+        function renderTitleBadges(titles) {
+            if (!titles) return '';
+            let list = Array.isArray(titles) ? titles : [titles];
+            let html = '';
+            list.forEach(t => {
+                switch(t) {
+                    case 'ADMIN':
+                        html += `<span class="title-badge title-admin" title="Administrator"><i class="fas fa-shield-alt me-1"></i>ADMIN</span>`;
+                        break;
+                    case 'GOKH':
+                        html += `<span class="title-badge title-gokh" title="Grandmaster of Khanh Hoa"><i class="fas fa-gem me-1"></i>GOKH</span>`;
+                        break;
+                    case 'KHM':
+                        html += `<span class="title-badge title-khm" title="Khanh Hoa Master"><i class="fas fa-crown me-1"></i>KHM</span>`;
+                        break;
+                    case 'CM':
+                        html += `<span class="title-badge title-cm" title="Candidate Master"><i class="fas fa-award me-1"></i>CM</span>`;
+                        break;
+                }
+            });
+            return html;
+        }
+
+        function switchAdminTab(tabName) {
+            document.getElementById('btnTabPending').classList.remove('active');
+            document.getElementById('btnTabEditRequests').classList.remove('active');
+            document.getElementById('btnTabMembers').classList.remove('active');
+            document.getElementById('btnTabNewsAdmin').classList.remove('active');
+
+            document.getElementById('tab-pending').classList.remove('active-tab');
+            document.getElementById('tab-edit-requests').classList.remove('active-tab');
+            document.getElementById('tab-members').classList.remove('active-tab');
+            document.getElementById('tab-news-admin').classList.remove('active-tab');
+
+            if (tabName === 'pending') {
+                document.getElementById('btnTabPending').classList.add('active');
+                document.getElementById('tab-pending').classList.add('active-tab');
+            } else if (tabName === 'edit-requests') {
+                document.getElementById('btnTabEditRequests').classList.add('active');
+                document.getElementById('tab-edit-requests').classList.add('active-tab');
+            } else if (tabName === 'members') {
+                document.getElementById('btnTabMembers').classList.add('active');
+                document.getElementById('tab-members').classList.add('active-tab');
+                loadAdminMemberManagement();
+            } else if (tabName === 'news') {
+                document.getElementById('btnTabNewsAdmin').classList.add('active');
+                document.getElementById('tab-news-admin').classList.add('active-tab');
+                loadAdminNewsList();
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            if (sectionId === 'lookup') {
+                document.getElementById('lookupSection').classList.remove('hidden');
+                loadMembersTable();
+            } else if (sectionId === 'news') {
+                document.getElementById('newsSection').classList.remove('hidden');
+                loadPublicNewsList();
+            } else if (sectionId === 'register') {
+                document.getElementById('registerSection').classList.remove('hidden');
+            } else if (sectionId === 'edit-request') {
+                document.getElementById('editRequestSection').classList.remove('hidden');
+            } else if (sectionId === 'admin') {
+                document.getElementById('adminSection').classList.remove('hidden');
+                loadAdminPanel();
+            } else if (sectionId === 'profile') {
+                document.getElementById('profileSection').classList.remove('hidden');
+            }
+            const nav = document.getElementById('navbarNav');
+            if (nav) nav.classList.remove('show');
+        }
+
+        function previewSelectedImage(event) {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(selectedFile);
+            }
+        }
+
+        function previewEditImage(event) {
+            editSelectedFile = event.target.files[0];
+            if (editSelectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('editPhotoPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(editSelectedFile);
+            }
+        }
+
+        function previewNewsImage(event) {
+            newsSelectedFile = event.target.files[0];
+            if (newsSelectedFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('postPhotoPreview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(newsSelectedFile);
+            }
+        }
+
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'ml_default'); 
+
+            const res = await fetch('https://api.cloudinary.com/v1_1/c7bvky0u/image/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) throw new Error('Không thể tải ảnh lên Cloudinary');
+            const data = await res.json();
+            return data.secure_url;
+        }
+
+        async function handleRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const yob = document.getElementById('regYob').value.trim();
+            const gender = document.getElementById('regGender').value;
+            const email = document.getElementById('regEmail').value.trim();
+
+            if (!selectedFile) {
+                alert('Vui lòng chọn ảnh đại diện!');
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                const photoUrl = await uploadToCloudinary(selectedFile);
+                const now = new Date();
+                const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
+
+                await db.collection("pending").add({
+                    name, yob, gender, email,
+                    photo: photoUrl,
+                    date: timeString,
+                    titles: [],
+                    eloStd: 0, eloRapid: 0, eloBlitz: 0
+                });
+
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Đăng ký thành công! Yêu cầu đã được gửi lên hệ thống.');
+                document.getElementById('registrationForm').reset();
+                document.getElementById('photoPreview').classList.add('hidden');
+                selectedFile = null;
+                showSection('lookup');
+            } catch (error) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Có lỗi xảy ra khi tải ảnh: ' + error.message);
+            }
+        }
+
+        async function handleEditRequest(e) {
+            e.preventDefault();
+            const memberId = document.getElementById('reqMemberId').value.trim();
+            const name = document.getElementById('reqName').value.trim();
+            const yob = document.getElementById('reqYob').value.trim();
+            const email = document.getElementById('reqEmail').value.trim();
+            const note = document.getElementById('reqNote').value.trim();
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                const now = new Date();
+                const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
+
+                await db.collection("edit_requests").add({
+                    memberId, name, yob, email, note,
+                    date: timeString,
+                    status: "Chờ xử lý"
+                });
+
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Gửi yêu cầu chỉnh sửa thành công! Quản trị viên sẽ xem xét đơn của bạn.');
+                document.getElementById('editRequestForm').reset();
+                showSection('lookup');
+            } catch (error) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Có lỗi xảy ra khi gửi yêu cầu: ' + error.message);
+            }
+        }
+
+        function loadMembersTable() {
+            const tbody = document.getElementById('memberTableBody');
+            if (!tbody) return;
+            document.getElementById('totalMembersCount').innerText = `Tổng số: ${membersCache.length}`;
+
+            if (membersCache.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4">Chưa có thành viên nào trong câu lạc bộ.</td></tr>`;
+                return;
+            }
+
+            let sorted = [...membersCache].sort((a,b) => getTotalElo(b) - getTotalElo(a));
+
+            let html = '';
+            sorted.forEach((m, index) => {
+                let rankDisplay = index + 1;
+                if (index === 0) rankDisplay = `<span class="rank-medal rank-1">1</span>`;
+                else if (index === 1) rankDisplay = `<span class="rank-medal rank-2">2</span>`;
+                else if (index === 2) rankDisplay = `<span class="rank-medal rank-3">3</span>`;
+
+                const totalElo = getTotalElo(m);
+                const titleBadgesHtml = renderTitleBadges(m.titles || m.title);
+
+                html += `
+                    <tr onclick="viewProfile('${m.id}')">
+                        <td class="text-center fw-bold">${rankDisplay}</td>
+                        <td class="fw-bold text-primary">${m.id}</td>
+                        <td class="fw-semibold">${m.name} ${titleBadgesHtml}</td>
+                        <td>${m.gender}</td>
+                        <td>${m.yob}</td>
+                        <td class="text-center"><span class="badge-elo badge-std">${m.eloStd || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-rapid">${m.eloRapid || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-blitz">${m.eloBlitz || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-total">${totalElo}</span></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function filterTable() {
+            const nameKey = document.getElementById('filterName').value.toLowerCase();
+            const idKey = document.getElementById('filterId').value.toLowerCase();
+            const genderKey = document.getElementById('filterGender').value;
+            const tbody = document.getElementById('memberTableBody');
+
+            const filtered = membersCache.filter(m => {
+                return m.name.toLowerCase().includes(nameKey) && m.id.toLowerCase().includes(idKey) && (genderKey === "" || m.gender === genderKey);
+            }).sort((a,b) => getTotalElo(b) - getTotalElo(a));
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted py-4">Không tìm thấy kỳ thủ phù hợp.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((m, index) => {
+                let rankDisplay = index + 1;
+                if (index === 0) rankDisplay = `<span class="rank-medal rank-1">1</span>`;
+                else if (index === 1) rankDisplay = `<span class="rank-medal rank-2">2</span>`;
+                else if (index === 2) rankDisplay = `<span class="rank-medal rank-3">3</span>`;
+
+                const totalElo = getTotalElo(m);
+                const titleBadgesHtml = renderTitleBadges(m.titles || m.title);
+
+                html += `
+                    <tr onclick="viewProfile('${m.id}')">
+                        <td class="text-center fw-bold">${rankDisplay}</td>
+                        <td class="fw-bold text-primary">${m.id}</td>
+                        <td class="fw-semibold">${m.name} ${titleBadgesHtml}</td>
+                        <td>${m.gender}</td>
+                        <td>${m.yob}</td>
+                        <td class="text-center"><span class="badge-elo badge-std">${m.eloStd || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-rapid">${m.eloRapid || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-blitz">${m.eloBlitz || 0}</span></td>
+                        <td class="text-center"><span class="badge-elo badge-total">${totalElo}</span></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function resetFilters() {
+            if (document.getElementById('filterName')) document.getElementById('filterName').value = '';
+            if (document.getElementById('filterId')) document.getElementById('filterId').value = '';
+            if (document.getElementById('filterGender')) document.getElementById('filterGender').value = '';
+            loadMembersTable();
+        }
+
+        function viewProfile(id) {
+            const m = membersCache.find(item => item.id === id);
+            if (!m) return;
+
+            document.getElementById('profileImage').src = m.photo;
+            document.getElementById('profileName').innerHTML = m.name + ' ' + renderTitleBadges(m.titles || m.title);
+            document.getElementById('profileId').innerText = m.id;
+            document.getElementById('profileGender').innerText = m.gender;
+            document.getElementById('profileYob').innerText = m.yob;
+            document.getElementById('profileEmail').innerText = m.email;
+            document.getElementById('profileDate').innerText = m.date || 'Không rõ';
+            document.getElementById('profileEloStd').innerText = m.eloStd || 0;
+            document.getElementById('profileEloRapid').innerText = m.eloRapid || 0;
+            document.getElementById('profileEloBlitz').innerText = m.eloBlitz || 0;
+            document.getElementById('profileEloTotal').innerText = getTotalElo(m);
+
+            showSection('profile');
+        }
+
+        // TÍNH NĂNG ADMIN XEM CHI TIẾT ĐƠN ĐĂNG KÝ
+        function openPendingDetailModal(firestoreId) {
+            const item = pendingCache.find(p => p.firestoreId === firestoreId);
+            if (!item) return;
+
+            document.getElementById('detailPhoto').src = item.photo;
+            document.getElementById('detailName').innerText = item.name;
+            document.getElementById('detailGender').innerText = item.gender;
+            document.getElementById('detailYob').innerText = item.yob;
+            document.getElementById('detailEmail').innerText = item.email;
+            document.getElementById('detailDate').innerText = item.date || 'Không rõ';
+
+            document.getElementById('btnDetailApprove').onclick = function() {
+                const modalEl = document.getElementById('pendingDetailModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+                approveApplication(firestoreId);
+            };
+
+            const modal = new bootstrap.Modal(document.getElementById('pendingDetailModal'));
+            modal.show();
+        }
+
+        // TÍNH NĂNG PHÓNG TO ẢNH TRACỨU / CHÂN DUNG
+        function openImageZoomModal(imgSrc) {
+            document.getElementById('zoomedImage').src = imgSrc;
+            const modal = new bootstrap.Modal(document.getElementById('imageZoomModal'));
+            modal.show();
+        }
+
+        function loadAdminPanel() {
+            document.getElementById('adminStatMembers').innerText = membersCache.length;
+            document.getElementById('adminStatPending').innerText = pendingCache.length;
+
+            const pendingBody = document.getElementById('pendingTableBody');
+            if (pendingCache.length === 0) {
+                pendingBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-3">Không có yêu cầu đăng ký nào đang chờ.</td></tr>`;
+            } else {
+                let pHtml = '';
+                pendingCache.forEach((p) => {
+                    pHtml += `
+                        <tr>
+                            <td><img src="${p.photo}" width="48" height="48" class="rounded object-fit-cover border zoomable-img" onclick="openImageZoomModal('${p.photo}')" title="Bấm để phóng to"></td>
+                            <td class="fw-bold">${p.name}</td>
+                            <td>${p.gender}</td>
+                            <td>${p.yob}</td>
+                            <td>${p.email}</td>
+                            <td><small class="text-muted">${p.date}</small></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info text-white me-1" onclick="openPendingDetailModal('${p.firestoreId}')" title="Xem chi tiết đơn"><i class="fas fa-eye me-1"></i>Chi tiết</button>
+                                <button class="btn btn-sm btn-success me-1" onclick="approveApplication('${p.firestoreId}')"><i class="fas fa-check me-1"></i>Duyệt</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="rejectApplication('${p.firestoreId}')"><i class="fas fa-times"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                pendingBody.innerHTML = pHtml;
+            }
+
+            const editReqBody = document.getElementById('editRequestsTableBody');
+            if (editRequestsCache.length === 0) {
+                editReqBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-3">Không có yêu cầu chỉnh sửa nào đang chờ.</td></tr>`;
+            } else {
+                let eHtml = '';
+                editRequestsCache.forEach((r) => {
+                    eHtml += `
+                        <tr>
+                            <td class="fw-bold text-primary">${r.memberId}</td>
+                            <td class="fw-bold">${r.name || '(Giữ nguyên)'}</td>
+                            <td>${r.yob || '(Giữ nguyên)'}</td>
+                            <td>${r.email}</td>
+                            <td><small>${r.note}</small></td>
+                            <td><small class="text-muted">${r.date}</small></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-primary me-1" onclick="applyEditRequest('${r.firestoreId}')"><i class="fas fa-check me-1"></i>Duyệt & Lưu</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteEditRequest('${r.firestoreId}')"><i class="fas fa-times"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                editReqBody.innerHTML = eHtml;
+            }
+
+            loadAdminMemberManagement();
+        }
+
+        function loadAdminMemberManagement() {
+            const adminMemberBody = document.getElementById('adminMemberTableBody');
+            const searchKey = document.getElementById('adminFilterKey') ? document.getElementById('adminFilterKey').value.toLowerCase().trim() : '';
+
+            const filtered = membersCache.filter(m => m.name.toLowerCase().includes(searchKey) || m.id.toLowerCase().includes(searchKey)).sort((a,b) => getTotalElo(b) - getTotalElo(a));
+
+            if (filtered.length === 0) {
+                adminMemberBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-3">Không tìm thấy thành viên nào.</td></tr>`;
+                return;
+            }
+
+            let mHtml = '';
+            filtered.forEach((m) => {
+                const totalElo = getTotalElo(m);
+                const std = parseInt(m.eloStd) || 0;
+                const rapid = parseInt(m.eloRapid) || 0;
+                const blitz = parseInt(m.eloBlitz) || 0;
+                const titleBadgesHtml = renderTitleBadges(m.titles || m.title);
+
+                mHtml += `
+                    <tr>
+                        <td class="fw-bold text-primary text-center align-middle">${m.id}</td>
+                        <td class="fw-semibold align-middle">${m.name} <br> ${titleBadgesHtml}</td>
+
+                        <td class="align-middle text-center">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-danger" onclick="changeEloStep('${m.firestoreId}', 'eloStd', ${std}, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="form-control text-center fw-bold text-primary" value="${std}" onchange="updateEloFirebase('${m.firestoreId}', 'eloStd', this.value)">
+                                <button class="btn btn-outline-success" onclick="changeEloStep('${m.firestoreId}', 'eloStd', ${std}, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-danger" onclick="changeEloStep('${m.firestoreId}', 'eloRapid', ${rapid}, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="form-control text-center fw-bold text-success" value="${rapid}" onchange="updateEloFirebase('${m.firestoreId}', 'eloRapid', this.value)">
+                                <button class="btn btn-outline-success" onclick="changeEloStep('${m.firestoreId}', 'eloRapid', ${rapid}, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-danger" onclick="changeEloStep('${m.firestoreId}', 'eloBlitz', ${blitz}, -1)"><i class="fas fa-minus"></i></button>
+                                <input type="number" class="form-control text-center fw-bold text-warning bg-dark" value="${blitz}" onchange="updateEloFirebase('${m.firestoreId}', 'eloBlitz', this.value)">
+                                <button class="btn btn-outline-success" onclick="changeEloStep('${m.firestoreId}', 'eloBlitz', ${blitz}, 1)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </td>
+
+                        <td class="align-middle text-center">
+                            <span class="badge-elo badge-total">${totalElo}</span>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <button class="btn btn-sm btn-primary" onclick="openEditMemberModal('${m.firestoreId}')" title="Sửa danh hiệu & thông tin"><i class="fas fa-edit"></i> Sửa</button>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <button class="btn btn-sm btn-danger" onclick="deleteMemberFirebase('${m.firestoreId}', '${m.name}')" title="Xóa VĐV"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            adminMemberBody.innerHTML = mHtml;
+        }
+
+        function openEditMemberModal(firestoreId) {
+            const m = membersCache.find(item => item.firestoreId === firestoreId);
+            if (!m) return;
+
+            document.getElementById('editFirestoreId').value = firestoreId;
+            document.getElementById('editName').value = m.name;
+            document.getElementById('editYob').value = m.yob;
+            document.getElementById('editGender').value = m.gender;
+            document.getElementById('editEmail').value = m.email;
+            document.getElementById('editPhotoPreview').src = m.photo;
+            editSelectedFile = null;
+
+            let currentTitles = [];
+            if (Array.isArray(m.titles)) {
+                currentTitles = m.titles;
+            } else if (m.title) {
+                currentTitles = [m.title];
+            }
+
+            document.querySelectorAll('.title-checkbox').forEach(cb => {
+                cb.checked = currentTitles.includes(cb.value);
+            });
+
+            const modal = new bootstrap.Modal(document.getElementById('editMemberModal'));
+            modal.show();
+        }
+
+        async function saveMemberEdits() {
+            const firestoreId = document.getElementById('editFirestoreId').value;
+            const name = document.getElementById('editName').value.trim();
+            const yob = document.getElementById('editYob').value.trim();
+            const gender = document.getElementById('editGender').value;
+            const email = document.getElementById('editEmail').value.trim();
+
+            const selectedTitles = [];
+            document.querySelectorAll('.title-checkbox:checked').forEach(cb => {
+                selectedTitles.push(cb.value);
+            });
+
+            if (!name || !yob || !email) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                let photoUrl = document.getElementById('editPhotoPreview').src;
+                if (editSelectedFile) {
+                    photoUrl = await uploadToCloudinary(editSelectedFile);
+                }
+
+                await db.collection("members").doc(firestoreId).update({
+                    name, yob, gender, email,
+                    titles: selectedTitles,
+                    photo: photoUrl
+                });
+
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Cập nhật thông tin & danh hiệu vận động viên thành công!');
+                
+                const modalEl = document.getElementById('editMemberModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+            } catch (err) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Có lỗi xảy ra: ' + err.message);
+            }
+        }
+
+        async function applyEditRequest(firestoreId) {
+            const req = editRequestsCache.find(r => r.firestoreId === firestoreId);
+            if (!req) return;
+
+            const member = membersCache.find(m => m.id === req.memberId);
+            if (!member) {
+                alert("Không tìm thấy VĐV có mã: " + req.memberId);
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                let updateData = {};
+                if (req.name && req.name.trim() !== "") updateData.name = req.name.trim();
+                if (req.yob && req.yob.trim() !== "") updateData.yob = req.yob.trim();
+                if (req.email && req.email.trim() !== "") updateData.email = req.email.trim();
+
+                if (Object.keys(updateData).length > 0) {
+                    await db.collection("members").doc(member.firestoreId).update(updateData);
+                }
+
+                await db.collection("edit_requests").doc(firestoreId).delete();
+
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert(`Đã cập nhật thông tin thành công cho VĐV ${member.name} (Mã: ${member.id})! Các danh hiệu đã được giữ nguyên hoàn toàn.`);
+            } catch (err) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert("Lỗi khi xử lý yêu cầu: " + err.message);
+            }
+        }
+
+        async function deleteEditRequest(firestoreId) {
+            if (confirm('Bạn có chắc muốn xóa yêu cầu này?')) {
+                await db.collection("edit_requests").doc(firestoreId).delete();
+            }
+        }
+
+        async function createNewsPost(e) {
+            e.preventDefault();
+            const title = document.getElementById('postTitle').value.trim();
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!title || !content) {
+                alert('Vui lòng điền đầy đủ tiêu đề và nội dung!');
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                let imageUrl = "";
+                if (newsSelectedFile) {
+                    imageUrl = await uploadToCloudinary(newsSelectedFile);
+                }
+
+                const now = new Date();
+                const timeString = now.toLocaleDateString('vi-VN') + ' ' + now.toLocaleTimeString('vi-VN');
+
+                await db.collection("news").add({
+                    title, category, content,
+                    photo: imageUrl,
+                    date: timeString,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Đã đăng bài thành công!');
+                document.getElementById('newsForm').reset();
+                document.getElementById('postPhotoPreview').classList.add('hidden');
+                newsSelectedFile = null;
+                loadAdminNewsList();
+            } catch (err) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('Lỗi đăng bài: ' + err.message);
+            }
+        }
+
+        function loadPublicNewsList() {
+            const container = document.getElementById('publicNewsList');
+            if (newsCache.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted py-4">Chưa có thông báo hoặc tin tức nào.</div>`;
+                return;
+            }
+
+            let html = '';
+            newsCache.forEach(n => {
+                const badgeClass = n.category === 'Thông báo' ? 'bg-danger' : 'bg-primary';
+                const imageHtml = n.photo ? `<div class="my-3 text-center"><img src="${n.photo}" class="news-image border shadow-sm zoomable-img" onclick="openImageZoomModal('${n.photo}')"></div>` : '';
+                html += `
+                    <div class="card news-card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge ${badgeClass}">${n.category}</span>
+                                <small class="text-muted"><i class="far fa-clock me-1"></i>${n.date || ''}</small>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">${n.title}</h4>
+                            <p class="mb-0 text-secondary" style="white-space: pre-line;">${n.content}</p>
+                            ${imageHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function loadAdminNewsList() {
+            const container = document.getElementById('adminNewsList');
+            if (newsCache.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted py-3">Chưa có bài đăng nào.</div>`;
+                return;
+            }
+
+            let html = '';
+            newsCache.forEach(n => {
+                const imgThumb = n.photo ? `<img src="${n.photo}" width="50" height="50" class="rounded object-fit-cover me-2 border zoomable-img" onclick="openImageZoomModal('${n.photo}')">` : '';
+                html += `
+                    <div class="border rounded p-3 mb-2 bg-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            ${imgThumb}
+                            <div>
+                                <span class="badge ${n.category === 'Thông báo' ? 'bg-danger' : 'bg-primary'} mb-1">${n.category}</span>
+                                <h6 class="fw-bold mb-1">${n.title}</h6>
+                                <small class="text-muted">${n.date || ''}</small>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteNews('${n.firestoreId}')"><i class="fas fa-trash"></i> Xóa</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        async function deleteNews(firestoreId) {
+            if (confirm('Bạn có chắc muốn xóa bài đăng này không?')) {
+                await db.collection("news").doc(firestoreId).delete();
+            }
+        }
+
+        async function changeEloStep(firestoreId, type, currentElo, delta) {
+            let amount = prompt(`Nhập số điểm Elo muốn ${delta > 0 ? 'TĂNG (+)' : 'TRỪ (-)'}:`, "10");
+            if (amount === null) return;
+            let step = parseInt(amount);
+            if (isNaN(step) || step <= 0) {
+                alert("Vui lòng nhập một số nguyên dương hợp lệ!");
+                return;
+            }
+            let newElo = Math.max(0, parseInt(currentElo) + (delta * step));
+            await db.collection("members").doc(firestoreId).update({ [type]: newElo });
+        }
+
+        async function updateEloFirebase(firestoreId, type, val) {
+            let numVal = parseInt(val);
+            let finalVal = isNaN(numVal) ? 0 : Math.max(0, numVal);
+            await db.collection("members").doc(firestoreId).update({ [type]: finalVal });
+        }
+
+        async function approveApplication(firestoreId) {
+            const item = pendingCache.find(p => p.firestoreId === firestoreId);
+            if (!item) return;
+
+            let nextNum = membersCache.length + 1;
+            const newId = String(nextNum).padStart(6, '0');
+
+            await db.collection("members").add({
+                id: newId,
+                name: item.name,
+                yob: item.yob,
+                gender: item.gender,
+                email: item.email,
+                photo: item.photo,
+                date: item.date,
+                titles: [],
+                eloStd: 0, eloRapid: 0, eloBlitz: 0
+            });
+
+            await db.collection("pending").doc(firestoreId).delete();
+            alert('Đã duyệt thành công! Cấp mã VĐV: ' + newId);
+        }
+
+        async function rejectApplication(firestoreId) {
+            if (confirm('Bạn có chắc muốn từ chối yêu cầu này?')) {
+                await db.collection("pending").doc(firestoreId).delete();
+            }
+        }
+
+        async function deleteMemberFirebase(firestoreId, name) {
+            if (confirm(`Bạn có chắc chắn muốn XÓA vận động viên "${name}" không?`)) {
+                await db.collection("members").doc(firestoreId).delete();
+            }
+        }
+
+        function promptAdminPassword() {
+            let pass = prompt("Nhập mật khẩu quản trị viên:");
+            if (pass !== null) {
+                if (pass.trim() === _getPass()) {
+                    document.getElementById('adminNavTab').classList.remove('hidden');
+                    showSection('admin');
+                    alert('Đăng nhập Quản Trị thành công!');
+                } else {
+                    alert('Mật khẩu không chính xác!');
+                }
+            }
+        }
+
+        // LẮNG NGHE DỮ LIỆU REALTIME
+        db.collection("members").orderBy("id").onSnapshot(snapshot => {
+            membersCache = [];
+            snapshot.forEach(doc => membersCache.push({ firestoreId: doc.id, ...doc.data() }));
+            if (!document.getElementById('lookupSection').classList.contains('hidden')) loadMembersTable();
+            if (!document.getElementById('adminSection').classList.contains('hidden')) loadAdminPanel();
+        });
+
+        db.collection("pending").onSnapshot(snapshot => {
+            pendingCache = [];
+            snapshot.forEach(doc => pendingCache.push({ firestoreId: doc.id, ...doc.data() }));
+            if (!document.getElementById('adminSection').classList.contains('hidden')) loadAdminPanel();
+        });
+
+        db.collection("edit_requests").onSnapshot(snapshot => {
+            editRequestsCache = [];
+            snapshot.forEach(doc => editRequestsCache.push({ firestoreId: doc.id, ...doc.data() }));
+            if (!document.getElementById('adminSection').classList.contains('hidden')) loadAdminPanel();
+        });
+
+        db.collection("news").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+            newsCache = [];
+            snapshot.forEach(doc => newsCache.push({ firestoreId: doc.id, ...doc.data() }));
+            if (!document.getElementById('newsSection').classList.contains('hidden')) loadPublicNewsList();
+            if (!document.getElementById('adminSection').classList.contains('hidden')) loadAdminNewsList();
+        });
+
+        window.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.keyCode === 65)) {
+                e.preventDefault();
+                promptAdminPassword();
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <!-- OVERLAY LOADING -->
+    <div id="loadingOverlay" class="hidden">
+        <div class="text-center">
+            <div class="spinner-border text-light mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+            <div>Đang tải dữ liệu... Vui lòng chờ!</div>
+        </div>
+    </div>
+
+    <!-- HEADER TRẮNG PHONG CÁCH FIDE -->
+    <nav class="navbar navbar-expand-lg navbar-fide sticky-top">
+        <div class="container">
+            <div class="navbar-brand-fide" onclick="showSection('lookup')">
+                <img src="Biểu tượng vua cờ KHCC xanh navy.png" alt="KHCC Logo" onerror="this.style.display='none'">
+                <div>
+                    <div class="brand-title">Khanh Hoa Chess Club</div>
+                    <div class="brand-sub">Câu Lạc Bộ Cờ Vua Khánh Hòa</div>
+                </div>
+            </div>
+            <button class="navbar-toggler border-0" type="button" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars fs-3 text-primary"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link nav-link-fide" onclick="showSection('lookup')"><i class="fas fa-trophy me-1 text-primary"></i> Tra cứu thành viên</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-fide" onclick="showSection('news')"><i class="fas fa-newspaper me-1 text-info"></i> Tin tức & Thông báo</a></li>
+                    
+                    <!-- TAB DỊCH VỤ DROPDOWN -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-fide dropdown-toggle text-success" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-concierge-bell me-1"></i> Dịch Vụ
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-fide" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item dropdown-item-fide" onclick="showSection('register')"><i class="fas fa-user-plus me-2 text-success"></i> Đăng ký thành viên</a></li>
+                            <li><a class="dropdown-item dropdown-item-fide" onclick="showSection('edit-request')"><i class="fas fa-user-edit me-2 text-primary"></i> Gửi yêu cầu chỉnh sửa VĐV</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item hidden" id="adminNavTab"><a class="nav-link nav-link-fide text-warning" onclick="showSection('admin')"><i class="fas fa-user-shield me-1"></i> Quản Trị</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+
+        <!-- 1. TRA CỨU & BẢNG XẾP HẠNG CÔNG KHAI -->
+        <div id="lookupSection" class="content-section">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-list-ol me-2"></i> Bảng Xếp Hạng Kỳ Thủ (Sắp xếp theo Tổng Elo)</span>
+                    <span class="badge bg-secondary" id="totalMembersCount">Tổng số: 0</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <input type="text" id="filterName" class="form-control" placeholder="Tìm kiếm theo tên..." onkeyup="filterTable()">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="filterId" class="form-control" placeholder="Mã VĐV (vd: 000001)..." onkeyup="filterTable()">
+                        </div>
+                        <div class="col-md-3">
+                            <select id="filterGender" class="form-select" onchange="filterTable()">
+                                <option value="">Tất cả giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-secondary w-100" onclick="resetFilters()"><i class="fas fa-sync-alt me-1"></i> Đặt lại</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle border">
+                            <thead>
+                                <tr>
+                                    <th style="width: 70px;" class="text-center">#</th>
+                                    <th>Mã VĐV</th>
+                                    <th>Họ và Tên</th>
+                                    <th>Giới tính</th>
+                                    <th>Năm sinh</th>
+                                    <th class="text-center">Cờ Tiêu Chuẩn</th>
+                                    <th class="text-center">Cờ Nhanh</th>
+                                    <th class="text-center">Cờ Chớp</th>
+                                    <th class="text-center">Tổng Elo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="memberTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. TAB TIN TỨC & THÔNG BÁO CÔNG KHAI -->
+        <div id="newsSection" class="content-section hidden">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-bullhorn me-2"></i> Tin Tức & Thông Báo Mới Nhất</div>
+                <div class="card-body p-4" id="publicNewsList">
+                    <!-- Dữ liệu tin tức sẽ hiển thị tại đây -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. HỒ SƠ CHI TIẾT KỲ THỦ -->
+        <div id="profileSection" class="content-section hidden">
+            <button class="btn btn-outline-secondary mb-3" onclick="showSection('lookup')"><i class="fas fa-arrow-left me-1"></i> Quay lại danh sách</button>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-id-card me-2"></i> Thông tin chi tiết VĐV</div>
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            <img id="profileImage" src="" class="player-avatar zoomable-img" alt="Ảnh kỳ thủ" onclick="openImageZoomModal(this.src)" title="Bấm để phóng to ảnh">
+                        </div>
+                        <div class="col-md-8">
+                            <table class="table table-borderless fs-5">
+                                <tr>
+                                    <td class="fw-bold text-muted" style="width: 180px;">Họ tên:</td>
+                                    <td><h3 id="profileName" class="fw-bold mb-0" style="color: var(--primary-navy);"></h3></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted">Mã VĐV:</td>
+                                    <td id="profileId" class="fw-bold text-secondary"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted">Giới tính:</td>
+                                    <td id="profileGender"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted">Năm sinh:</td>
+                                    <td id="profileYob"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted">Email:</td>
+                                    <td id="profileEmail"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted">Ngày gia nhập:</td>
+                                    <td id="profileDate" class="text-muted small"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-muted align-middle">Hệ số Elo:</td>
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span class="badge-elo badge-std">Tiêu chuẩn: <strong id="profileEloStd"></strong></span>
+                                            <span class="badge-elo badge-rapid">Nhanh: <strong id="profileEloRapid"></strong></span>
+                                            <span class="badge-elo badge-blitz">Chớp: <strong id="profileEloBlitz"></strong></span>
+                                            <span class="badge-elo badge-total">Tổng Elo: <strong id="profileEloTotal"></strong></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. DỊCH VỤ - ĐĂNG KÝ THÀNH VIÊN -->
+        <div id="registerSection" class="content-section hidden">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header text-center py-3"><i class="fas fa-user-plus me-2"></i> Đăng Ký Thành Viên Khanh Hoa Chess Club</div>
+                        <div class="card-body p-4">
+                            <form id="registrationForm" onsubmit="handleRegistration(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Họ và tên <span class="text-danger">*</span></label>
+                                    <input type="text" id="regName" class="form-control" required placeholder="Ví dụ: Nguyễn Văn A">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Năm sinh <span class="text-danger">*</span></label>
+                                        <input type="number" id="regYob" class="form-control" required min="1930" max="2026" placeholder="Ví dụ: 2012">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Giới tính <span class="text-danger">*</span></label>
+                                        <select id="regGender" class="form-select" required>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Email liên hệ <span class="text-danger">*</span></label>
+                                    <input type="email" id="regEmail" class="form-control" required placeholder="example@gmail.com">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Ảnh khuôn mặt (Chân dung) <span class="text-danger">*</span></label>
+                                    <input type="file" id="regPhotoFile" class="form-control" accept="image/*" required onchange="previewSelectedImage(event)">
+                                    
+                                    <div class="mt-3 text-center">
+                                        <img id="photoPreview" src="" alt="Xem trước ảnh" class="hidden rounded border" style="max-height: 160px; object-fit: cover;">
+                                    </div>
+
+                                    <div class="photo-guide-card">
+                                        <div class="fw-bold text-primary mb-2"><i class="fas fa-camera me-1"></i> Hướng dẫn chụp & chọn ảnh hợp lệ (Chuẩn FIDE):</div>
+                                        <div class="text-center mb-2">
+                                            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 280'><rect width='700' height='280' fill='%23ffffff'/><g transform='translate(20,20)'><rect width='200' height='240' fill='%23f1f5f9' stroke='%2310b981' stroke-width='4' rx='8'/><circle cx='100' cy='90' r='45' fill='%23cbd5e1'/><path d='M40 210 Q100 140 160 210' fill='%23002b66'/><text x='100' y='230' text-anchor='middle' fill='%2310b981' font-weight='bold' font-size='16'>✓ HỢP LỆ (Chụp thẳng)</text></g><g transform='translate(250,20)'><rect width='200' height='240' fill='%23f1f5f9' stroke='%23ef4444' stroke-width='4' rx='8'/><circle cx='100' cy='90' r='45' fill='%23cbd5e1'/><path d='M30 180 L70 210 L110 170' fill='none' stroke='%23ef4444' stroke-width='6'/><text x='100' y='230' text-anchor='middle' fill='%23ef4444' font-weight='bold' font-size='16'>✗ KHOANH TAY / DẤU V</text></g><g transform='translate(480,20)'><rect width='200' height='240' fill='%23f1f5f9' stroke='%23ef4444' stroke-width='4' rx='8'/><circle cx='100' cy='120' r='18' fill='%23cbd5e1'/><text x='100' y='230' text-anchor='middle' fill='%23ef4444' font-weight='bold' font-size='16'>✗ CHỤP QUÁ XA</text></g></svg>" alt="Hướng dẫn chụp ảnh mặt" class="photo-guide-img">
+                                        </div>
+                                        <ul class="small text-muted mb-0 ps-3">
+                                            <li><strong>Nên dùng:</strong> Ảnh chụp thẳng khuôn mặt, rõ nét, khung hình cắt vừa từ ngực lên đầu (tỷ lệ 480 x 600).</li>
+                                            <li><strong>Không nên:</strong> Giơ tay tạo dáng (dấu V), dán nhãn dán/sticker lên mặt, chụp quá xa hoặc chụp quay lưng.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn text-white w-100 py-3 fw-bold mt-2" style="background: var(--primary-navy);"><i class="fas fa-paper-plane me-2"></i> Gửi Đơn Đăng Ký</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. DỊCH VỤ - GỬI YÊU CẦU CHỈNH SỬA THÔNG TIN VĐV -->
+        <div id="editRequestSection" class="content-section hidden">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header text-center py-3"><i class="fas fa-user-edit me-2"></i> Gửi Yêu Cầu Chỉnh Sửa Thông Tin VĐV</div>
+                        <div class="card-body p-4">
+                            <form id="editRequestForm" onsubmit="handleEditRequest(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Mã VĐV của bạn <span class="text-danger">*</span></label>
+                                    <input type="text" id="reqMemberId" class="form-control" required placeholder="Ví dụ: 000001">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Họ và tên mới (nếu có thay đổi)</label>
+                                    <input type="text" id="reqName" class="form-control" placeholder="Nhập họ tên chính xác...">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Năm sinh mới (nếu sai)</label>
+                                        <input type="number" id="reqYob" class="form-control" placeholder="Ví dụ: 2013">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Email chính chủ <span class="text-danger">*</span></label>
+                                        <input type="email" id="reqEmail" class="form-control" required placeholder="example@gmail.com">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Lý do / Chi tiết nội dung cần chỉnh sửa <span class="text-danger">*</span></label>
+                                    <textarea id="reqNote" class="form-control" rows="4" required placeholder="Mô tả lý do sửa đổi thông tin hoặc xin đính chính..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn text-white w-100 py-3 fw-bold mt-2" style="background: var(--primary-navy);"><i class="fas fa-paper-plane me-2"></i> Gửi Yêu Cầu Chỉnh Sửa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. QUẢN TRỊ (ADMIN) -->
+        <div id="adminSection" class="content-section hidden">
+            <div class="row mb-4 g-3">
+                <div class="col-md-4">
+                    <div class="stats-box">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold mb-1">Thành viên chính thức</div>
+                            <h2 class="fw-bold mb-0" id="adminStatMembers" style="color: var(--primary-navy);">0</h2>
+                        </div>
+                        <div class="stats-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-box" style="border-left-color: #d97706;">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold mb-1">Đơn chờ duyệt</div>
+                            <h2 class="fw-bold text-warning mb-0" id="adminStatPending">0</h2>
+                        </div>
+                        <div class="stats-icon text-warning"><i class="fas fa-clock"></i></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-box" style="border-left-color: #059669;">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold mb-1">Trạng thái</div>
+                            <h2 class="fw-bold text-success mb-0">Hoạt động</h2>
+                        </div>
+                        <div class="stats-icon text-success"><i class="fas fa-check-circle"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB MENU ADMIN -->
+            <ul class="nav nav-tabs mb-4" id="adminTabs">
+                <li class="nav-item">
+                    <button class="nav-link active" id="btnTabPending" type="button" onclick="switchAdminTab('pending')"><i class="fas fa-clipboard-check me-2"></i> Duyệt Đơn Đăng Ký</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btnTabEditRequests" type="button" onclick="switchAdminTab('edit-requests')"><i class="fas fa-edit me-2"></i> Yêu Cầu Sửa Đổi VĐV</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btnTabMembers" type="button" onclick="switchAdminTab('members')"><i class="fas fa-user-cog me-2"></i> Sửa Thông Tin, Danh Hiệu & Elo</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="btnTabNewsAdmin" type="button" onclick="switchAdminTab('news')"><i class="fas fa-bullhorn me-2"></i> Đăng Tin Tức / Thông Báo</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="adminTabContent">
+                <!-- TAB 1: DUYỆT ĐƠN -->
+                <div class="admin-tab-pane active-tab" id="tab-pending">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark"><i class="fas fa-hourglass-half me-2"></i> Danh Sách Chờ Xét Duyệt Đăng Ký</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ảnh</th>
+                                            <th>Họ tên</th>
+                                            <th>Giới tính</th>
+                                            <th>Năm sinh</th>
+                                            <th>Email</th>
+                                            <th>Thời gian</th>
+                                            <th class="text-center">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pendingTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: YÊU CẦU CHỈNH SỬA VĐV -->
+                <div class="admin-tab-pane" id="tab-edit-requests">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white"><i class="fas fa-user-edit me-2"></i> Danh Sách Yêu Cầu Chỉnh Sửa Thông Tin VĐV</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Mã VĐV</th>
+                                            <th>Tên mới đề xuất</th>
+                                            <th>Năm sinh mới</th>
+                                            <th>Email</th>
+                                            <th>Ghi chú / Lý do</th>
+                                            <th>Thời gian gửi</th>
+                                            <th class="text-center">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="editRequestsTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: QUẢN LÝ ELO, DANH HIỆU, SỬA THÔNG TIN VÀ XÓA VĐV -->
+                <div class="admin-tab-pane" id="tab-members">
+                    <div class="card">
+                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: var(--primary-navy);">
+                            <span><i class="fas fa-tasks me-2"></i> Sửa Thông Tin, Danh Hiệu, Cộng / Trừ Elo & Xóa VĐV</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" id="adminFilterKey" class="form-control" placeholder="Tra cứu Tên hoặc Mã VĐV..." onkeyup="loadAdminMemberManagement()">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light text-center">
+                                        <tr>
+                                            <th style="width: 80px;">Mã VĐV</th>
+                                            <th>Họ tên & Danh hiệu</th>
+                                            <th style="width: 160px;">Cờ Tiêu Chuẩn</th>
+                                            <th style="width: 160px;">Cờ Nhanh</th>
+                                            <th style="width: 160px;">Cờ Chớp</th>
+                                            <th style="width: 100px;">Tổng Elo</th>
+                                            <th style="width: 80px;">Sửa</th>
+                                            <th style="width: 60px;">Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminMemberTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: ĐĂNG TIN TỨC VÀ THÔNG BÁO (ADMIN) -->
+                <div class="admin-tab-pane" id="tab-news-admin">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white"><i class="fas fa-pen-nib me-2"></i> Tạo Bài Đăng Mới</div>
+                                <div class="card-body">
+                                    <form id="newsForm" onsubmit="createNewsPost(event)">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Tiêu đề bài viết <span class="text-danger">*</span></label>
+                                            <input type="text" id="postTitle" class="form-control" required placeholder="Nhập tiêu đề...">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Phân loại <span class="text-danger">*</span></label>
+                                            <select id="postCategory" class="form-select" required>
+                                                <option value="Thông báo">Thông báo</option>
+                                                <option value="Tin tức">Tin tức</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Ảnh đính kèm bài viết (không bắt buộc)</label>
+                                            <input type="file" id="postPhotoFile" class="form-control" accept="image/*" onchange="previewNewsImage(event)">
+                                            <div class="mt-2 text-center">
+                                                <img id="postPhotoPreview" src="" class="hidden rounded border" style="max-height: 140px; object-fit: cover;">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Nội dung chi tiết <span class="text-danger">*</span></label>
+                                            <textarea id="postContent" class="form-control" rows="5" required placeholder="Nhập nội dung thông báo hoặc tin tức..."></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100 fw-bold"><i class="fas fa-paper-plane me-2"></i> Đăng Bài</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card">
+                                <div class="card-header"><i class="fas fa-list me-2"></i> Danh Sách Bài Đăng Hiện Có</div>
+                                <div class="card-body" id="adminNewsList">
+                                    <!-- Danh sách bài đăng sẽ load ở đây -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL SỬA THÔNG TIN & CHỌN NHIỀU DANH HIỆU VĐV -->
+    <div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-white" style="background: var(--primary-navy);">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-user-edit me-2"></i> Chỉnh Sửa Thông Tin & Danh Hiệu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="editFirestoreId">
+                    <div class="mb-3 text-center">
+                        <img id="editPhotoPreview" src="" class="rounded border mb-2 zoomable-img" style="width: 120px; height: 150px; object-fit: cover;" onclick="openImageZoomModal(this.src)">
+                        <div>
+                            <label class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-camera me-1"></i> Đổi ảnh mặt mới
+                                <input type="file" id="editPhotoFile" class="d-none" accept="image/*" onchange="previewEditImage(event)">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Họ và Tên</label>
+                        <input type="text" id="editName" class="form-control" required>
+                    </div>
+
+                    <!-- LOẠI BỎ JCP VÀ ADP -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-primary"><i class="fas fa-award me-1"></i> Gán Danh Hiệu (Có thể chọn nhiều):</label>
+                        <div class="p-3 border rounded bg-light">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input title-checkbox" type="checkbox" value="ADMIN" id="cbAdmin">
+                                <label class="form-check-label fw-bold" for="cbAdmin">🖤 ADMIN (Quản trị viên)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input title-checkbox" type="checkbox" value="GOKH" id="cbGokh">
+                                <label class="form-check-label fw-bold" for="cbGokh">💎 Grandmaster of Khanh Hoa (GOKH)</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input title-checkbox" type="checkbox" value="KHM" id="cbKhm">
+                                <label class="form-check-label fw-bold" for="cbKhm">👑 Khanh Hoa Master (KHM)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input title-checkbox" type="checkbox" value="CM" id="cbCm">
+                                <label class="form-check-label fw-bold" for="cbCm">🥇 Candidate Master (CM)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Năm sinh</label>
+                            <input type="number" id="editYob" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Giới tính</label>
+                            <select id="editGender" class="form-select">
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email</label>
+                        <input type="email" id="editEmail" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary fw-bold" onclick="saveMemberEdits()"><i class="fas fa-save me-1"></i> Lưu Cập Nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL XEM CHI TIẾT ĐƠN ĐĂNG KÝ (ADMIN KIỂM DUYỆT) -->
+    <div class="modal fade" id="pendingDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-id-card me-2"></i> Chi Tiết Đơn Đăng Ký Kiểm Duyệt</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <img id="detailPhoto" src="" class="rounded border shadow-sm mb-3 zoomable-img" style="max-height: 220px; object-fit: cover;" onclick="openImageZoomModal(this.src)" title="Bấm để phóng to">
+                    <div class="text-start fs-6 border p-3 rounded bg-light">
+                        <div class="mb-2"><strong>Họ và tên:</strong> <span id="detailName" class="text-primary fw-bold"></span></div>
+                        <div class="mb-2"><strong>Giới tính:</strong> <span id="detailGender"></span></div>
+                        <div class="mb-2"><strong>Năm sinh:</strong> <span id="detailYob"></span></div>
+                        <div class="mb-2"><strong>Email:</strong> <span id="detailEmail"></span></div>
+                        <div><strong>Ngày gửi đơn:</strong> <span id="detailDate" class="text-muted"></span></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success fw-bold" id="btnDetailApprove"><i class="fas fa-check me-1"></i> Duyệt Đơn Này</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHÓNG TO ẢNH (LIGHTBOX) -->
+    <div class="modal fade" id="imageZoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center p-0 position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1055; filter: invert(1);"></button>
+                    <img id="zoomedImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
